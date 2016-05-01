@@ -1,0 +1,14 @@
+module br {
+    module com {
+	module ifce {
+	    module mflj {
+		module estacao {
+		    interface IServidorCentral {
+			void informarSensorLigado( in wstring nomeSensor, in boolean ligado );
+			void informarLeitura( in wstring nomeSensor, in wstring leitura );
+	            };
+		};
+	    };
+	};
+    };
+};
