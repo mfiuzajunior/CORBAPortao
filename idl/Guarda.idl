@@ -1,0 +1,17 @@
+module br {
+    module edu {
+	module ifce {
+	    module mflj {
+		module museu {
+		    module guarda {
+		        interface IGuarda {
+			    void entradaDeCliente();
+			    void saidaDeCliente();
+			    void entradaNaoAutorizada();
+			};
+		    };
+		};
+	    };
+	};
+    };
+};
