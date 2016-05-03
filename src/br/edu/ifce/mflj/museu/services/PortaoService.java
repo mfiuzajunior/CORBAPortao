@@ -9,6 +9,8 @@ import org.omg.CosNaming.NamingContextExtHelper;
 import org.omg.CosNaming.NamingContextPackage.CannotProceed;
 import org.omg.CosNaming.NamingContextPackage.NotFound;
 
+import br.edu.ifce.mflj.museu.Sino.ISino;
+import br.edu.ifce.mflj.museu.Sino.ISinoHelper;
 import br.edu.ifce.mflj.museu.guarda.IGuarda;
 import br.edu.ifce.mflj.museu.guarda.IGuardaHelper;
 
@@ -17,10 +19,12 @@ public class PortaoService implements Runnable {
 	private Object				nameService;
 	private NamingContext		namingContext;
 	private IGuarda				guarda;
+	private ISino				sino;
 
 	public PortaoService( String[] args ){
 		setUp( args );
 		obterGuarda();
+		obterSino();
 	}
 
 	private void setUp(String[] args){
@@ -52,15 +56,38 @@ public class PortaoService implements Runnable {
 		}
 	}
 
-	public void notificarEntradaAoGuarda(){
-		guarda.entradaDeCliente();
+	private void obterSino() {
+		try {
+			NameComponent	nameComponent[]		= { new NameComponent( "Sino", "Sino" ) };
+			Object			referenciaSino		= namingContext.resolve( nameComponent );
+
+			sino = ISinoHelper.narrow( referenciaSino );
+		}
+		catch (NotFound e) {
+			System.err.println("Sino ainda não registrado.");
+		}
+		catch (CannotProceed e) {
+			e.printStackTrace();
+		}
+		catch (org.omg.CosNaming.NamingContextPackage.InvalidName e) {
+			e.printStackTrace();
+		}
 	}
 
-	public void notificarSaidaAoGuarda(){
+	public void notificarEntrada(){
+		guarda.entradaDeCliente();
+		if( !sino.entradaDeCliente() ){
+			guarda.entradaNaoAutorizada();
+		}
+	}
+
+	public void notificarSaida(){
 		guarda.saidaDeCliente();
+		sino.saidaDeCliente();
 	}
 
 	public void run(){
 		this.orb.run();
+		System.out.println("Portão online");
 	}
 }

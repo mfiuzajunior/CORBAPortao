@@ -88,14 +88,14 @@ public class PortaoGUI extends JFrame implements ActionListener {
 	public void actionPerformed( ActionEvent actionEvent ){
 		if( actionEvent.getSource().equals( botaoEntrada ) ){
 			try {
-				portaoService.notificarEntradaAoGuarda();	
+				portaoService.notificarEntrada();	
 			} catch( NullPointerException nullPointerException ){
 				JOptionPane.showMessageDialog(this, "Não foi possível notificar guarda");
 			}
 
 		} else if( actionEvent.getSource().equals( botaoSaida ) ){
 			try {
-				portaoService.notificarSaidaAoGuarda();	
+				portaoService.notificarSaida();	
 			} catch( NullPointerException nullPointerException ){
 				JOptionPane.showMessageDialog(this, "Não foi possível notificar guarda");
 			}
